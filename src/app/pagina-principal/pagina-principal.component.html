@@ -1,0 +1,41 @@
+    <div class="container">
+        <div class="profile">
+            <img src="user-icon.png" alt="User Icon">
+            <p>Nombre Usuario</p>
+        </div>
+        <div class="selectors">
+                <ng-container  *ngIf="jefeOperaciones">
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent()">Gestion de mecanicos</button>
+                    <button class="btn btn-info mb-4">Gestion de usuarios</button>
+                    <button class="btn btn-info mb-4">Solicitudes de servicio</button>
+                    <button class="btn btn-info mb-4">Registrar Vehiculo</button>
+                    <button class="btn btn-info mb-4">Consultar Vehiculo</button>
+                    <button class="btn btn-info mb-4">Gestionar Agenda</button>
+                    <button class="btn btn-outline-danger mb-2">Cerrar la Sesión</button>
+                </ng-container >
+                <ng-container *ngIf="mecanico">
+                    <button class="btn btn-info btn-lg p-3 mb-4 fw-bold">Revisiones</button>
+                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Solicitudes</button>
+                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Consultar Vehiculo</button>
+                    <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2">Cerrar la Sesión</button>
+                </ng-container>
+                <ng-container *ngIf="cliente">
+                    <button class="btn btn-info btn-lg p-3 mb-4 fw-bold">Solicitar Servicio</button>
+                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Registrar Vehiculo</button>
+                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Consultar Vehiculo</button>
+                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Gestionar Agenda</button>
+                    <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2">Cerrar la Sesión</button>
+                </ng-container>
+            </div>
+        </div>
+    <div class="main-content">
+        <div class="header">
+            <div></div>
+            <img class="img" src="car-icon.png" alt="Car Icon">
+            <p>Perfil: Propietario</p>
+        </div>
+        <!-- Content goes here -->
+        <div>
+            <app-dynamic-component-loader #dynamicComponentLoader></app-dynamic-component-loader>
+        </div>
+    </div>
