@@ -1,5 +1,8 @@
 import { Injectable, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { SolicitarServicioComponent } from './solicitar-servicio/solicitar-servicio.component';
+import { RegistrarVehiculoComponent } from './registrar-vehiculo/registrar-vehiculo.component';
+import { ConsultarVehiculoComponent } from './consultar-vehiculo/consultar-vehiculo.component';
+import { GestionMecanicosComponent } from './gestion-mecanicos/gestion-mecanicos.component';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +10,7 @@ import { SolicitarServicioComponent } from './solicitar-servicio/solicitar-servi
 export class DynamicComponentService {
   private dynamicComponentContainer?: ViewContainerRef;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   setDynamicComponentContainer(container: ViewContainerRef) {
     this.dynamicComponentContainer = container;
@@ -27,6 +30,15 @@ export class DynamicComponentService {
         switch (accion) {
           case 'solicitar-servicio':
             component = SolicitarServicioComponent; // Importa el componente correspondiente
+            break;
+          case 'registrar-vehiculo':
+            component = RegistrarVehiculoComponent;
+            break;
+          case 'consultar-vehiculo':
+            component = ConsultarVehiculoComponent;
+            break;
+          case 'gestion-mecanicos':
+            component = GestionMecanicosComponent;
             break;
           // Agrega más casos según sea necesario
 

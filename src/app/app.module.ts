@@ -11,6 +11,9 @@ import { CalendarioComponent } from './solicitar-servicio/calendario/calendario.
 import { MatCardModule } from '@angular/material/card';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { RegistrarVehiculoComponent } from './registrar-vehiculo/registrar-vehiculo.component';
+import { ConsultarVehiculoComponent } from './consultar-vehiculo/consultar-vehiculo.component';
+import { GestionMecanicosComponent } from './gestion-mecanicos/gestion-mecanicos.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import {MatNativeDateModule} from '@angular/material/core';
     PaginaPrincipalComponent,
     SolicitarServicioComponent,
     DynamicComponentLoaderComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    RegistrarVehiculoComponent,
+    ConsultarVehiculoComponent,
+    GestionMecanicosComponent
   ],
   imports: [
     BrowserModule,

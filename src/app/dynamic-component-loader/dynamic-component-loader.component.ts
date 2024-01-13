@@ -11,12 +11,12 @@ export class DynamicComponentLoaderComponent {
 
   constructor(private route: ActivatedRoute, private dynamicComponentService: DynamicComponentService) {}
 
-  loadDynamicComponent() {
+  loadDynamicComponent(valor: string) {
     if (this.dynamicComponentContainer) {
       this.dynamicComponentService.setDynamicComponentContainer(this.dynamicComponentContainer);
       console.log('Dynamic component container is set successfully.');
       // Intenta cargar el componente directamente aquí.
-      this.dynamicComponentService.loadComponent('solicitar-servicio');
+      this.dynamicComponentService.loadComponent(valor);
     } else {
       console.error('Dynamic component container is not available.');
     }

@@ -16,19 +16,4 @@ export class PaginaPrincipalComponent implements OnInit {
   ngOnInit(): void {
     console.log('PaginaPrincipalComponent: ngOnInit is called.');
   }
-
-  cargarComponenteDinamico(valor: string) {
-    console.log('Valor:', valor);
-    console.log('DynamicComponentService:', this.dynamicComponentService);
-
-    this.dynamicComponentService.loadComponent('solicitar-servicio').then((success) => {
-      if (success) {
-        console.log('Component loaded successfully.');
-        // El componente se cargó exitosamente, puedes realizar acciones adicionales aquí si es necesario.
-      } else {
-        console.error('Component loading failed.');
-        // La carga del componente falló, maneja esto según tus necesidades.
-      }
-    });
-  }
 }
