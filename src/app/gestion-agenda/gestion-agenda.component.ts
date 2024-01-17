@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-consultar-vehiculo',
-  templateUrl: './consultar-vehiculo.component.html',
-  styleUrls: ['./consultar-vehiculo.component.css']
+  selector: 'app-gestion-agenda',
+  templateUrl: './gestion-agenda.component.html',
+  styleUrls: ['./gestion-agenda.component.css']
 })
-export class ConsultarVehiculoComponent {
+export class GestionAgendaComponent {
 
   mecSelected: boolean[] = [];
   mecanicoEditando: any = null;

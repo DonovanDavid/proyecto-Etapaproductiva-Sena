@@ -3,6 +3,8 @@ import { SolicitarServicioComponent } from './solicitar-servicio/solicitar-servi
 import { RegistrarVehiculoComponent } from './registrar-vehiculo/registrar-vehiculo.component';
 import { ConsultarVehiculoComponent } from './consultar-vehiculo/consultar-vehiculo.component';
 import { GestionMecanicosComponent } from './gestion-mecanicos/gestion-mecanicos.component';
+import { GestionUsuariosComponent } from './gestion-usuarios/gestion-usuarios.component';
+import { GestionAgendaComponent } from './gestion-agenda/gestion-agenda.component';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +41,12 @@ export class DynamicComponentService {
             break;
           case 'gestion-mecanicos':
             component = GestionMecanicosComponent;
+            break;
+          case 'gestion-usuarios':
+            component = GestionUsuariosComponent;
+            break;
+          case 'gestion-agenda':
+            component = GestionAgendaComponent;
             break;
           // Agrega más casos según sea necesario
 

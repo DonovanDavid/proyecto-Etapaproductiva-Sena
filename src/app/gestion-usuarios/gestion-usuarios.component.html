@@ -26,25 +26,25 @@
                     <th scope="col">Fecha Nacimiento</th>
                     <th scope="col">Telefono</th>
                     <th scope="col">Correo</th>
-                    <th scope="col">Nivel Estudios</th>
+                    <th scope="col">Ciudad Residencia</th>
                     <th scope="col">Dirrecion</th>
                     <th scope="col">Sede</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr *ngFor="let mecanico of mecanicosList | filter: searchTerm; let i = index">
+                <tr *ngFor="let cliente of clientesList | filter: searchTerm; let i = index">
                     <td><input type="checkbox" class="form-check-input" [(ngModel)]="mecSelected[i]" /></td>
-                    <td>{{ mecanico.id }}</td>
-                    <td>{{ mecanico.nombre }}</td>
-                    <td>{{ mecanico?.fechaNacimiento | date: 'shortDate'}}</td>
-                    <td>{{ mecanico.telefono }}</td>
-                    <td>{{ mecanico.correo }}</td>
-                    <td>{{ mecanico.nivelEstudios }}</td>
-                    <td>{{ mecanico.direccion }}</td>
-                    <td>{{ obtenerNombreSede(mecanico.idSede) }}</td>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente?.fechaNacimiento | date: 'shortDate'}}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.correo }}</td>
+                    <td>{{ cliente.ciudadResidencia }}</td>
+                    <td>{{ cliente.direccion }}</td>
+                    <td>{{ obtenerNombreSede(cliente.idSede) }}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" (click)="editarMecanico(mecanico)" data-bs-toggle="modal"
+                        <button class="btn btn-primary btn-sm" (click)="editarcliente(cliente)" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop" style="width: 100%;height: 50%;">Editar</button>
                     </td>
                 </tr>
@@ -66,33 +66,33 @@
                 <form>
                     <div class="mb-3">
                         <label class="col-form-label">Nombre:</label>
-                        <input *ngIf="mecanicoEditando" type="text" class="form-control"
-                            [(ngModel)]="mecanicoEditando.nombre" [ngModelOptions]="{standalone: true}">
+                        <input *ngIf="clienteEditando" type="text" class="form-control"
+                            [(ngModel)]="clienteEditando.nombre" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Fecha Nacimiento:</label>
-                        <input *ngIf="mecanicoEditando" type="text" class="form-control" [(ngModel)]="mecanicoEditando.fechaNacimiento"
+                        <input *ngIf="clienteEditando" type="text" class="form-control" [(ngModel)]="clienteEditando.fechaNacimiento"
                         [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Telefono:</label>
-                        <input *ngIf="mecanicoEditando"  type="text" class="form-control" [(ngModel)]="mecanicoEditando.telefono" [ngModelOptions]="{standalone: true}">
+                        <input *ngIf="clienteEditando"  type="text" class="form-control" [(ngModel)]="clienteEditando.telefono" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Correo:</label>
-                        <input *ngIf="mecanicoEditando" type="text" class="form-control" [(ngModel)]="mecanicoEditando.correo" [ngModelOptions]="{standalone: true}">
+                        <input *ngIf="clienteEditando" type="text" class="form-control" [(ngModel)]="clienteEditando.correo" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Nivel Estudios:</label>
-                        <input *ngIf="mecanicoEditando" type="text" class="form-control" [(ngModel)]="mecanicoEditando.nivelEstudios" [ngModelOptions]="{standalone: true}">
+                        <label class="col-form-label">Ciudad Residencia:</label>
+                        <input *ngIf="clienteEditando" type="text" class="form-control" [(ngModel)]="clienteEditando.ciudadResidencia" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Direccion:</label>
-                        <input *ngIf="mecanicoEditando"  type="text" class="form-control" [(ngModel)]="mecanicoEditando.direccion" [ngModelOptions]="{standalone: true}">
+                        <input *ngIf="clienteEditando"  type="text" class="form-control" [(ngModel)]="clienteEditando.direccion" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Sede:</label>
-                        <select  *ngIf="mecanicoEditando" class="form-control" [(ngModel)]="mecanicoEditando.idSede" name="sede">
+                        <select  *ngIf="clienteEditando" class="form-control" [(ngModel)]="clienteEditando.idSede" name="sede">
                             <option *ngFor="let sede of sedesList" [value]="sede.id">{{ sede.nombre }}</option>
                         </select>
                     </div>
@@ -141,8 +141,8 @@
                         <input type="password" class="form-control" [(ngModel)]="contrasenia" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Nivel Estudios:</label>
-                        <input type="text" class="form-control" [(ngModel)]="nivelEstudios" [ngModelOptions]="{standalone: true}">
+                        <label class="col-form-label">Ciudad de Residencia:</label>
+                        <input type="text" class="form-control" [(ngModel)]="ciudadResidencia" [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Direccion:</label>

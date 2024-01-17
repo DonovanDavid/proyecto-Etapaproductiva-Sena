@@ -14,6 +14,13 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { RegistrarVehiculoComponent } from './registrar-vehiculo/registrar-vehiculo.component';
 import { ConsultarVehiculoComponent } from './consultar-vehiculo/consultar-vehiculo.component';
 import { GestionMecanicosComponent } from './gestion-mecanicos/gestion-mecanicos.component';
+import { FormsModule } from '@angular/forms';
+import { GestionUsuariosComponent } from './gestion-usuarios/gestion-usuarios.component';
+import { GestionAgendaComponent } from './gestion-agenda/gestion-agenda.component';
+import {MatIconModule} from '@angular/material/icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FilterPipe } from './gestion-mecanicos/filter.pipe';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +31,10 @@ import { GestionMecanicosComponent } from './gestion-mecanicos/gestion-mecanicos
     CalendarioComponent,
     RegistrarVehiculoComponent,
     ConsultarVehiculoComponent,
-    GestionMecanicosComponent
+    GestionMecanicosComponent,
+    GestionUsuariosComponent,
+    GestionAgendaComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -32,7 +42,11 @@ import { GestionMecanicosComponent } from './gestion-mecanicos/gestion-mecanicos
     BrowserAnimationsModule,
     MatCardModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FormsModule,
+    MatIconModule,
+    NgbModule,
+    HttpClientModule
   ],
   providers: [DynamicComponentService],
   bootstrap: [AppComponent]
