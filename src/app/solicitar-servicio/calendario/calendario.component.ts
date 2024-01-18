@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
@@ -9,5 +9,10 @@ import {MatNativeDateModule} from '@angular/material/core';
   styleUrls: ['./calendario.component.css'],
 })
 export class CalendarioComponent {
-  selected?: Date | null;
+  @Output() messageEvent = new EventEmitter<string>();
+  selected = "";
+
+  sendMessage(){
+    this.messageEvent.emit(this.selected);
+  }
 }

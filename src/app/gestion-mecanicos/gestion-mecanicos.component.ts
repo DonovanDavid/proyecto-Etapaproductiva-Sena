@@ -13,6 +13,11 @@ export class GestionMecanicosComponent implements OnInit {
   searchTerm: string = '';
   mecanicosFiltrados: any[] = [];
 
+  
+  pageSize: number = 7;
+  totalPages: number = 0;
+  currentPage: number = 1;
+
   //Inicializacion de atributos del mecanico
   mecanicoId = "";
   nombre: string = "";
@@ -31,17 +36,6 @@ export class GestionMecanicosComponent implements OnInit {
   mecSelected: boolean[] = [];
   sedesList: any[] = [];
 
-
-  /*   mecSelected: boolean[] = [];
-    mecanicoEditando: any = {};
-    mecanicoEditandoIndex: number = -1;
-  
-    mecanicos = [
-      { id: 1, nombre: 'John Doe', especialidad: 'Mecánica General', experiencia: '10 años' },
-      { id: 2, nombre: 'Jane Smith', especialidad: 'Frenos', experiencia: '8 años' },
-      // Agrega más mecánicos según sea necesario
-    ]; */
-
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {
 
   }
@@ -57,6 +51,7 @@ export class GestionMecanicosComponent implements OnInit {
       .subscribe((resultData: any) => {
         console.log('Después de obtener los datos', resultData.data);
         this.mecanicosList = resultData.data;
+        this.updateTotalPages();
         console.log('mecanicosList:', this.mecanicosList);
         this.cdr.detectChanges();
       });
@@ -160,5 +155,24 @@ export class GestionMecanicosComponent implements OnInit {
   obtenerNombreSede(idSede: string): string {
     const sede = this.sedesList.find(sede => sede.id === idSede);
     return sede ? sede.nombre : 'Nombre no encontrado';
+  }
+
+  paginateVehiculos() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.mecanicosList.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateTotalPages(); // Agrega esta línea para actualizar el total de páginas
+    }
+  }
+  updateTotalPages() {
+    this.totalPages = Math.ceil(this.mecanicosList.length / this.pageSize);
+  }
+  generatePageArray(totalPages: number): number[] {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 }

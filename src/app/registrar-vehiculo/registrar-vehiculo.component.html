@@ -2,78 +2,43 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
         <div class="col mb-3">
             <label class="form-label fw-bold">Placa:</label>
-            <input type="text" class="form-control" placeholder="">
+            <input type="text" class="form-control" placeholder="" [(ngModel)]="placa">
+        </div>
+        <div class="col mb-3">
+            <label class="form-label fw-bold">Marca:</label>
+            <select class="form-select" [(ngModel)]="marca" name="marca">
+                <option *ngFor="let marca of marcaList" [value]="marca.id">{{ marca.nombre }}
+                </option>
+            </select>
         </div>
         <div class="col mb-3">
             <label class="form-label fw-bold">Cilindraje:</label>
-            <input type="number" class="form-control" placeholder="">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="estado">
         </div>
         <div class="col mb-3">
             <label class="form-label fw-bold">Tipo Vehiculo:</label>
-            <select class="form-select" aria-label="Default select example">
-                <option selected>Selecciona</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <select class="form-select" [(ngModel)]="tipoVehiculo" name="tipoVehiculo">
+                <option *ngFor="let tipoVehiculo of tipoVehiculoList" [value]="tipoVehiculo.id">{{ tipoVehiculo.nombre }}
+                </option>
             </select>
         </div>
         <div class="col mb-3">
             <label class="form-label fw-bold">Modelo:</label>
-            <input type="number" class="form-control" placeholder="">
-        </div>
-        <div class="col mb-3">
-            <label class="form-label fw-bold">País:</label>
-            <input type="text" class="form-control" placeholder="">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="modelo">
         </div>
         <div class="col mb-3">
             <label class="form-label fw-bold">Numero de pasajeros:</label>
-            <input type="number" class="form-control" placeholder="">
+            <input type="number" class="form-control" placeholder="" [(ngModel)]="capacidadPasajeros">
         </div>
     </div>
 </div>
-<div class="container text-center mt-3 ps-5 pe-5">
-    <div class="row">
-        <div class="col-md-3 mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="checkbox1" style="width: 20px;height: 20px;">
-                <label class="form-check-label fw-bold" style="margin-top: 1px;" for="checkbox1">
-                    Aire Acondicionado
-                </label>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="checkbox2" style="width: 20px;height: 20px;">
-                <label class="form-check-label fw-bold" style="margin-top: 1px;" for="checkbox2">
-                    Frenos ABS
-                </label>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="checkbox3" style="width: 20px;height: 20px;">
-                <label class="form-check-label fw-bold" style="margin-top: 1px;" for="checkbox3">
-                    Airbag
-                </label>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="checkbox4" style="width: 20px;height: 20px;">
-                <label class="form-check-label fw-bold" style="margin-top: 1px;" for="checkbox4">
-                    Caja Automática
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-5 ps-5 pe-5">
+<div class="container mt-1 ps-5 pe-5">
     <div class="mt-3">
-        <textarea class="form-control" rows="6" placeholder="Observaciones"></textarea>
+        <label class="form-label fw-bold">Observaciones:</label>
+        <textarea class="form-control" rows="6" placeholder="Escriba aquí la descripcion más detallada de su carro" [(ngModel)]="descripcion"></textarea>
     </div>
 </div>
 
 <div class="container d-flex justify-content-center mt-3">
-    <button class="btn btn-outline-warning ">Registrar Vehiculo</button>
+    <button class="btn btn-outline-warning " (click)="guardarVehiculo()">Registrar Vehiculo</button>
 </div>

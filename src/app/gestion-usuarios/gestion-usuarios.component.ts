@@ -11,6 +11,10 @@ export class GestionUsuariosComponent implements OnInit {
   searchTerm: string = '';
   clientesFiltrados: any[] = [];
 
+  pageSize: number = 7;
+  totalPages: number = 0;
+  currentPage: number = 1;
+
   //Inicializacion de atributos del cliente
   clienteId = "";
   nombre: string = "";
@@ -44,6 +48,7 @@ export class GestionUsuariosComponent implements OnInit {
       .subscribe((resultData: any) => {
         console.log('Después de obtener los datos', resultData.data);
         this.clientesList = resultData.data;
+        this.updateTotalPages();
         console.log('clientesList:', this.clientesList);
         this.cdr.detectChanges();
       });
@@ -92,6 +97,7 @@ export class GestionUsuariosComponent implements OnInit {
           alert('Error en la solicitud. Consulta la consola para más detalles.');
         }
       );
+    this.getAll();
   }
 
   editarcliente(cliente: any) {
@@ -154,5 +160,23 @@ export class GestionUsuariosComponent implements OnInit {
   obtenerNombreSede(idSede: string): string {
     const sede = this.sedesList.find(sede => sede.id === idSede);
     return sede ? sede.nombre : 'Nombre no encontrado';
+  }
+  paginateVehiculos() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.clientesList.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateTotalPages(); // Agrega esta línea para actualizar el total de páginas
+    }
+  }
+  updateTotalPages() {
+    this.totalPages = Math.ceil(this.clientesList.length / this.pageSize);
+  }
+  generatePageArray(totalPages: number): number[] {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 }

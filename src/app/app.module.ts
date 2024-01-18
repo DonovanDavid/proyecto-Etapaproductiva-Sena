@@ -21,6 +21,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from './gestion-mecanicos/filter.pipe';
 import { HttpClientModule } from '@angular/common/http';
+import { FilterPlacaPipe } from './consultar-vehiculo/filter-placa.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { HttpClientModule } from '@angular/common/http';
     GestionMecanicosComponent,
     GestionUsuariosComponent,
     GestionAgendaComponent,
-    FilterPipe
+    FilterPipe,
+    FilterPlacaPipe
   ],
   imports: [
     BrowserModule,
