@@ -22,6 +22,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from './gestion-mecanicos/filter.pipe';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterPlacaPipe } from './consultar-vehiculo/filter-placa.pipe';
+import { LoginComponent } from './login/login.component';
+import { AuthService } from './login/auth-service.service';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +39,8 @@ import { FilterPlacaPipe } from './consultar-vehiculo/filter-placa.pipe';
     GestionUsuariosComponent,
     GestionAgendaComponent,
     FilterPipe,
-    FilterPlacaPipe
+    FilterPlacaPipe,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,7 @@ import { FilterPlacaPipe } from './consultar-vehiculo/filter-placa.pipe';
     NgbModule,
     HttpClientModule
   ],
-  providers: [DynamicComponentService],
+  providers: [DynamicComponentService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

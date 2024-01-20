@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicComponentService } from '../dymamic-component.service';
+import {UserInfo} from '../login/auth-service.service'
+
 
 @Component({
   selector: 'app-pagina-principal',
@@ -7,13 +9,26 @@ import { DynamicComponentService } from '../dymamic-component.service';
   styleUrls: ['./pagina-principal.component.css']
 })
 export class PaginaPrincipalComponent implements OnInit {
-  jefeOperaciones: boolean = true;
-  mecanico: boolean = false;
-  cliente: boolean = false;
+  id?: number;
+  nombre?: string="";
+  tipoUsuario?: number;
+  userInfo?: UserInfo; // Utiliza la interfaz UserInfo
 
   constructor(public dynamicComponentService: DynamicComponentService) {}
 
   ngOnInit(): void {
-    console.log('PaginaPrincipalComponent: ngOnInit is called.');
+     // Obtiene la información del usuario desde el almacenamiento local
+    const userInfoString = localStorage.getItem('userInfo');
+
+    if (userInfoString) {
+      // Parsea la información del usuario
+      this.userInfo = JSON.parse(userInfoString);
+      this.tipoUsuario = this.userInfo?.tipoUsuario;
+      this.nombre = this.userInfo?.nombre;
+      this.id = this.userInfo?.id;
+      console.log(this.tipoUsuario);
+    } else {
+      console.log('userInfoString es nulo o indefinido');
+    }
   }
 }

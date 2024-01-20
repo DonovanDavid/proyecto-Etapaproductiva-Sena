@@ -16,13 +16,9 @@ export class DynamicComponentService {
 
   setDynamicComponentContainer(container: ViewContainerRef) {
     this.dynamicComponentContainer = container;
-    console.log('Dynamic component container set:', this.dynamicComponentContainer);
-
-    // Intenta cargar el componente directamente aquí.
-    this.loadComponent('solicitar-servicio');
   }
 
-  loadComponent(accion: string): Promise<boolean> {
+  loadComponent(accion: string, userId: number): Promise<boolean> {
     console.log('Loading component with action:', accion);
 
     return new Promise((resolve) => {
@@ -57,7 +53,10 @@ export class DynamicComponentService {
         if (component) {
           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(component);
           this.dynamicComponentContainer.clear();
-          this.dynamicComponentContainer.createComponent(componentFactory);
+          // Crea una instancia del componente y pasa el userId como un Input
+          const componentRef = this.dynamicComponentContainer.createComponent(componentFactory);
+          (componentRef.instance as any).userId = userId;
+
           console.log('Component loaded successfully.');
           resolve(true);
         } else {

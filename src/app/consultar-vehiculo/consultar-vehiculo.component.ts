@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-consultar-vehiculo',
@@ -9,6 +9,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 export class ConsultarVehiculoComponent implements OnInit {
   searchTerm: string = '';
   mecanicosFiltrados: any[] = [];
+
+  @Input() userId: any;
 
   pageSize: number = 7;
   totalPages: number = 0;
@@ -20,19 +22,19 @@ export class ConsultarVehiculoComponent implements OnInit {
   nombre: string = "";
 
 
-  placa: string="";
-  tipoVehiculo="";
-  capacidadPasajeros="";
-  descripcion: string="";
-  modelo="";
-  marca="";
-  estado="";
-  idCliente="";
+  placa: string = "";
+  tipoVehiculo = "";
+  capacidadPasajeros = "";
+  descripcion: string = "";
+  modelo = "";
+  marca = "";
+  estado = "";
+  idCliente = "";
 
   vehiculosList: any[] = [];
 
   mecanicoEditando: any = {};
-  mecSelected: boolean[] = [];
+  mecSelected: { [placa: string]: boolean } = {};
   sedesList: any[] = [];
   clientesList: any[] = [];
 
@@ -41,43 +43,80 @@ export class ConsultarVehiculoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Inicializar mecSelected con todas las placas de vehículos
+    this.vehiculosList.forEach(vehiculo => {
+      this.mecSelected[vehiculo.placa] = false;
+    });
+
     this.getAll();
   }
 
   //Obtencion de todos los vehiculos
   getAll() {
-    this.http.get("http://localhost:8085/api/vehiculo")
-      .subscribe((resultData: any) => {
-        console.log('Después de obtener los datos', resultData.data);
-        this.vehiculosList = resultData.data;
-        this.updateTotalPages();
-        console.log('mecanicosList:', this.vehiculosList);
-        this.cdr.detectChanges();
-      });
+    if (this.userId["tipoUsuario"] == 3) {
+      this.http.get("http://localhost:8085/api/vehiculos/cliente" + "/" + this.userId["id"])
+        .subscribe((resultData: any) => {
+          this.vehiculosList = resultData.data;
+          this.updateTotalPages();
+          this.resetSelection();
+          this.cdr.detectChanges();
+
+          // Inicializar mecSelected con todas las placas de vehículos
+          this.vehiculosList.forEach(vehiculo => {
+            this.mecSelected[vehiculo.placa] = false;
+          });
+        });
       //Obtencion de todos las marcas
-    this.http.get("http://localhost:8085/api/marca")
-      .subscribe((resultData: any) => {
-        this.marcaList = resultData.data;
-      });
-      
-  //Obtencion de todos los tiposVehiculos
-    this.http.get("http://localhost:8085/api/tipovehiculo")
-    .subscribe((resultData: any) => {
-      this.tipoVehiculoList = resultData.data;
-    });
-  //Obtencion de todos los clientes
-    this.http.get("http://localhost:8085/api/cliente")
-    .subscribe((resultData: any) => {
-      this.clientesList = resultData.data;
-    });
+      this.http.get("http://localhost:8085/api/marca")
+        .subscribe((resultData: any) => {
+          this.marcaList = resultData.data;
+        });
+
+      //Obtencion de todos los tiposVehiculos
+      this.http.get("http://localhost:8085/api/tipovehiculo")
+        .subscribe((resultData: any) => {
+          this.tipoVehiculoList = resultData.data;
+        });
+      //Obtencion de todos los clientes
+      this.http.get("http://localhost:8085/api/cliente")
+        .subscribe((resultData: any) => {
+          this.clientesList = resultData.data;
+        });
+    } else {
+
+      this.http.get("http://localhost:8085/api/vehiculo")
+        .subscribe((resultData: any) => {
+          this.vehiculosList = resultData.data;
+          this.updateTotalPages();
+          this.resetSelection();
+          this.cdr.detectChanges();
+
+          // Inicializar mecSelected con todas las placas de vehículos
+          this.vehiculosList.forEach(vehiculo => {
+            this.mecSelected[vehiculo.placa] = false;
+          });
+        });
+      //Obtencion de todos las marcas
+      this.http.get("http://localhost:8085/api/marca")
+        .subscribe((resultData: any) => {
+          this.marcaList = resultData.data;
+        });
+
+      //Obtencion de todos los tiposVehiculos
+      this.http.get("http://localhost:8085/api/tipovehiculo")
+        .subscribe((resultData: any) => {
+          this.tipoVehiculoList = resultData.data;
+        });
+      //Obtencion de todos los clientes
+      this.http.get("http://localhost:8085/api/cliente")
+        .subscribe((resultData: any) => {
+          this.clientesList = resultData.data;
+        });
+    }
   }
 
-
   eliminarSeleccionados() {
-    // Obtén los IDs de los elementos seleccionados
-    const idsToDelete = this.vehiculosList
-      .map((vehiculo, index) => this.mecSelected[index] ? vehiculo.placa : null)
-      .filter(placa => placa !== null);
+    const idsToDelete = this.vehiculosSeleccionados;
 
     console.log(idsToDelete);
 
@@ -86,7 +125,6 @@ export class ConsultarVehiculoComponent implements OnInit {
       return;
     }
 
-    // Realiza la solicitud para eliminar los mecánicos seleccionados
     this.http.post("http://localhost:8085/api/vehiculo/delete-multiple", { ids: idsToDelete })
       .subscribe(
         (resultData: any) => {
@@ -103,8 +141,6 @@ export class ConsultarVehiculoComponent implements OnInit {
           alert('Error en la solicitud. Consulta la consola para más detalles.');
         }
       );
-
-    this.getAll();
   }
 
   editarMecanico(mecanico: any) {
@@ -152,7 +188,7 @@ export class ConsultarVehiculoComponent implements OnInit {
       "modelo": this.modelo,
       "marca": this.marca,
       "estado": this.estado,
-      "idCliente": 1
+      "idCliente": this.userId["id"]
     };
     console.log(bodyData);
     this.http.post("http://localhost:8085/api/vehiculo/add", bodyData).subscribe((resultData: any) => {
@@ -174,10 +210,29 @@ export class ConsultarVehiculoComponent implements OnInit {
     return Marca ? Marca.nombre : 'Nombre no encontrado';
   }
 
+  resetSelection() {
+    this.mecSelected = {};
+    this.vehiculosList.forEach(vehiculo => {
+      this.mecSelected[vehiculo.placa] = false;
+    });
+  }
+  vehiculosSeleccionados: string[] = [];
+
+  toggleSelection(placa: string) {
+    if (this.vehiculosSeleccionados.includes(placa)) {
+      this.vehiculosSeleccionados = this.vehiculosSeleccionados.filter(p => p !== placa);
+    } else {
+      this.vehiculosSeleccionados.push(placa);
+    }
+    console.log('Toggle selection:', this.vehiculosSeleccionados);
+  }
+
   paginateVehiculos() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    return this.vehiculosList.slice(startIndex, endIndex);
+    const paginatedVehiculos = this.vehiculosList.slice(startIndex, endIndex);
+    this.resetSelection(); // Llama al método para reiniciar la selección
+    return paginatedVehiculos;
   }
 
   goToPage(page: number) {

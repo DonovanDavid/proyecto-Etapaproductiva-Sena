@@ -33,7 +33,7 @@ export class GestionMecanicosComponent implements OnInit {
   mecanicosList: any[] = [];
 
   mecanicoEditando: any = {};
-  mecSelected: boolean[] = [];
+  mecSelected: { [placa: string]: boolean } = {};
   sedesList: any[] = [];
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {
@@ -41,18 +41,20 @@ export class GestionMecanicosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+     // Inicializar mecSelected con todas las placas de vehículos
+     this.mecanicosList.forEach(vehiculo => {
+      this.mecSelected[vehiculo.id] = false;
+    });
+
     this.getAll();
   }
 
   //Obtencion de todos los mecanicos
   getAll() {
-    console.log('Antes de obtener los datos');
     this.http.get("http://localhost:8085/api/mecanico")
       .subscribe((resultData: any) => {
-        console.log('Después de obtener los datos', resultData.data);
         this.mecanicosList = resultData.data;
         this.updateTotalPages();
-        console.log('mecanicosList:', this.mecanicosList);
         this.cdr.detectChanges();
       });
   //Obtencion de todas las sedes
@@ -63,20 +65,17 @@ export class GestionMecanicosComponent implements OnInit {
   }
 
 
+ 
   eliminarSeleccionados() {
-    // Obtén los IDs de los elementos seleccionados
-    const idsToDelete = this.mecanicosList
-      .map((mecanico, index) => this.mecSelected[index] ? mecanico.id : null)
-      .filter(id => id !== null);
-
+    const idsToDelete = this.vehiculosSeleccionados;
+  
     console.log(idsToDelete);
-
+  
     if (idsToDelete.length === 0) {
-      alert('Por favor, selecciona al menos un mecánico para eliminar.');
+      alert('Por favor, selecciona al menos un vehiculo para eliminar.');
       return;
     }
-
-    // Realiza la solicitud para eliminar los mecánicos seleccionados
+  
     this.http.post("http://localhost:8085/api/mecanico/delete-multiple", { ids: idsToDelete })
       .subscribe(
         (resultData: any) => {
@@ -93,6 +92,23 @@ export class GestionMecanicosComponent implements OnInit {
           alert('Error en la solicitud. Consulta la consola para más detalles.');
         }
       );
+  }
+
+  resetSelection() {
+    this.mecSelected = {};
+    this.mecanicosList.forEach(vehiculo => {
+      this.mecSelected[vehiculo.placa] = false;
+    });
+  }
+  vehiculosSeleccionados: string[] = [];
+
+  toggleSelection(placa: string) {
+    if (this.vehiculosSeleccionados.includes(placa)) {
+      this.vehiculosSeleccionados = this.vehiculosSeleccionados.filter(p => p !== placa);
+    } else {
+      this.vehiculosSeleccionados.push(placa);
+    }
+    console.log('Toggle selection:', this.vehiculosSeleccionados);
   }
 
   editarMecanico(mecanico: any) {

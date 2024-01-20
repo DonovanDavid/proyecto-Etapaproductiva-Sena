@@ -27,21 +27,19 @@
                     <th scope="col">Descripcion</th>
                     <th scope="col">Modelo</th>
                     <th scope="col">Marca</th>
-                    <th scope="col">Estado</th>
                     <th scope="col">Dueño</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 <tr *ngFor="let vehiculo of paginateVehiculos()| filterPlaca: searchTerm; let i = index">
-                    <td><input type="checkbox" class="form-check-input" [(ngModel)]="mecSelected[i]" /></td>
+                    <td><input type="checkbox" class="form-check-input" [checked]="vehiculosSeleccionados.includes(vehiculo.placa)" (change)="toggleSelection(vehiculo.placa)" /></td>
                     <td>{{ vehiculo.placa }}</td>
                     <td>{{ obtenerNombreTipoVehiculo(vehiculo.tipoVehiculo)}}</td>
                     <td>{{ vehiculo.capacidadPasajeros}}</td>
                     <td>{{ vehiculo.descripcion }}</td>
                     <td>{{ vehiculo.modelo }}</td>
                     <td>{{ obtenerNombreMarca(vehiculo.marca) }}</td>
-                    <td>{{ vehiculo.estado }}</td>
                     <td>{{ obtenerNombreCliente(vehiculo.idCliente) }}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" (click)="editarMecanico(vehiculo)" data-bs-toggle="modal"
@@ -79,7 +77,7 @@
                     <div class="mb-3">
                         <label class="col-form-label">Placa:</label>
                         <input *ngIf="mecanicoEditando" type="text" class="form-control"
-                            [(ngModel)]="mecanicoEditando.placa" [ngModelOptions]="{standalone: true}">
+                            [(ngModel)]="mecanicoEditando.placa" [ngModelOptions]="{standalone: true}" [disabled]="userId.tipoUsuario == 3">
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Tipo de vehiculo:</label>
@@ -114,7 +112,7 @@
                     <div class="mb-3">
                         <label class="col-form-label">Cliente:</label>
                         <select *ngIf="mecanicoEditando" class="form-control" [(ngModel)]="mecanicoEditando.idCliente"
-                            name="sede">
+                            name="sede" [disabled]="userId.tipoUsuario == 3">
                             <option *ngFor="let cliente of clientesList" [value]="cliente.id">{{ cliente.nombre }}
                             </option>
                         </select>
@@ -172,13 +170,6 @@
                         <label class="col-form-label">Marca:</label>
                         <select class="form-control" [(ngModel)]="marca" name="marca">
                             <option *ngFor="let marca of marcaList" [value]="marca.id">{{ marca.nombre }}</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="col-form-label">Cliente:</label>
-                        <select class="form-control" [(ngModel)]="idCliente" name="cliente">
-                            <option *ngFor="let cliente of clientesList" [value]="cliente.id">{{ cliente.nombre }}
-                            </option>
                         </select>
                     </div>
                 </form>

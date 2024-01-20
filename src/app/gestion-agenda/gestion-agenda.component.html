@@ -1,16 +1,16 @@
 <div class="container pt-5 ps-5 pe-5">
     <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="form-label fw-bold pt-3">Placa del vehículo a consultar:</label>
+        <div class="col-md-6 mb-3 pe-5">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Buscar">
+                <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchTerm">
                 <button class="btn btn-primary" type="button">Buscar</button>
             </div>
         </div>
-        <div class="col-md-6 mb-3 text-md-right">
-            <button class="btn btn-success" type="button">Crear</button>
-            <button class="btn btn-primary" (click)="editarMecanico(mecanicos)">Editar</button>
-            <button class="btn btn-danger" type="button" (click)="eliminarSeleccionados()">Eliminar
+        <div class="col-md-6 mb-3 text-md-right " style="margin-left: auto;display: flex; justify-content: flex-end;">
+            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#staticCrear"
+                [disabled]="userId.tipoUsuario == 2 || userId.tipoUsuario  == 3">Crear</button>
+            <button class="btn btn-danger" type="button" (click)="eliminarSeleccionados()"
+                [disabled]="userId.tipoUsuario == 2 || userId.tipoUsuario  == 3">Eliminar
                 Seleccionados</button>
         </div>
     </div>
@@ -21,34 +21,160 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Vehiculo</th>
+                    <th scope="col">Mecanico</th>
                     <th scope="col">Fecha</th>
-                    <th scope="col">Revisiones</th>
-                    <th scope="col">Mecánico</th>
+                    <th scope="col">Hora</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Precio</th>
+                    <th scope="col">Observaciones</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr *ngFor="let mecanico of mecanicos; let i = index">
-                    <td><input type="checkbox" class="form-check-input" [(ngModel)]="mecSelected[i]" /></td>
-                    <td>{{ mecanico.nombre }}</td>
-                    <td>{{ mecanico.especialidad }}</td>
-                    <td>{{ mecanico.experiencia }}</td>
+                <tr *ngFor="let revision of paginateVehiculos()| filterPlaca: searchTerm; let i = index">
+                    <td><input type="checkbox" class="form-check-input"
+                            [checked]="vehiculosSeleccionados.includes(revision.idRevision)"
+                            (change)="toggleSelection(revision.idRevision)" /></td>
+                    <td>{{ revision.idRevision }}</td>
+                    <td>{{ revision.vehiculo}}</td>
+                    <td>{{ obtenerNombreMecanico(revision.mecanico )}}</td>
+                    <td>{{ revision.fecha | date: 'shortDate'}}</td>
+                    <td>{{ revision.hora }}</td>
+                    <td>{{ revision.estado }}</td>
+                    <td>{{ revision.observaciones }}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" (click)="editarMecanico(revision)" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop" style="width: 100%;height: 50%;">Editar</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
+        <ul class="pagination">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link" (click)="goToPage(currentPage - 1)">Anterior</button>
+            </li>
+            <li class="page-item" *ngFor="let page of generatePageArray(totalPages)"
+                [class.active]="currentPage === page">
+                <button class="page-link" (click)="goToPage(page)">{{ page }}</button>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button class="page-link" (click)="goToPage(currentPage + 1)">Siguiente</button>
+            </li>
+        </ul>
     </div>
 </div>
 
-<div *ngIf="mecanicoEditando">
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="mecanicoEditando.nombre">
+<!-- Modal Edicion-->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Mecánico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="col-form-label">Mecanico:</label>
+                        <select *ngIf="mecanicoEditando" class="form-control" [(ngModel)]="mecanicoEditando.mecanico"
+                            name="mecanico" [disabled]="userId.tipoUsuario == 2 || userId.tipoUsuario  == 3">
+                            <option *ngFor="let mecanicoss of mecanicosList" [value]="mecanicoss.id">{{
+                                mecanicoss.nombre }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Fecha</label>
+                        <input *ngIf="mecanicoEditando" type="date" class="form-control"
+                            [(ngModel)]="mecanicoEditando.fecha" [ngModelOptions]="{standalone: true}"
+                            [disabled]="userId.tipoUsuario == 2 || userId.tipoUsuario == 3">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Hora:</label>
+                        <input *ngIf="mecanicoEditando" type="text" class="form-control"
+                            [(ngModel)]="mecanicoEditando.hora" [ngModelOptions]="{standalone: true}"
+                            [disabled]="userId.tipoUsuario == 2 || userId.tipoUsuario  == 3">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Estado:</label>
+                        <select *ngIf="mecanicoEditando" class="form-control" [(ngModel)]="mecanicoEditando.estado"
+                            name="estado" [disabled]="userId.tipoUsuario  == 3">
+                            <option [value]="1">Sin revision</option>
+                            <option [value]="2">En proceso de revision</option>
+                            <option [value]="3">Revisado</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Observaciones:</label>
+                        <textarea *ngIf="mecanicoEditando" type="observaciones" class="form-control"
+                            [(ngModel)]="mecanicoEditando.observaciones" [ngModelOptions]="{standalone: true}"
+                            rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="guardarEdicion()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <label>Especialidad:</label>
-    <input type="text" [(ngModel)]="mecanicoEditando.especialidad">
-
-    <label>Experiencia:</label>
-    <input type="text" [(ngModel)]="mecanicoEditando.experiencia">
-
-    <button class="btn btn-success btn-sm" (click)="guardarEdicion()">Guardar</button>
+<!-- Modal Creacion-->
+<div class="modal fade" id="staticCrear" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear Vehiculo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="col-form-label">Vehiculo:</label>
+                        <select class="form-control" [(ngModel)]="vehiculo" name="vehiculo">
+                            <option *ngFor="let vehiculo of vehiculosList" [value]="vehiculo.placa">{{
+                                vehiculo.placa }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Mecanico:</label>
+                        <select class="form-control" [(ngModel)]="mecanico" name="mecanico">
+                            <option *ngFor="let mecanicoss of mecanicosList" [value]="mecanicoss.id">{{
+                                mecanicoss.nombre }}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Fecha</label>
+                        <input type="date" class="form-control" [(ngModel)]="fecha"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Hora:</label>
+                        <input type="time" class="form-control" [(ngModel)]="hora"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Estado:</label>
+                        <input type="text" class="form-control" [(ngModel)]="estado"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Observaciones:</label>
+                        <textarea type="observaciones" class="form-control" [(ngModel)]="observaciones"
+                            [ngModelOptions]="{standalone: true}" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="guardarCreacion()">Guardar</button>
+            </div>
+        </div>
+    </div>
 </div>

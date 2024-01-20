@@ -30,7 +30,7 @@ export class GestionUsuariosComponent implements OnInit {
   clientesList: any[] = [];
 
   clienteEditando: any = {};
-  mecSelected: boolean[] = [];
+  mecSelected: { [placa: string]: boolean } = {};
   sedesList: any[] = [];
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {
@@ -38,18 +38,19 @@ export class GestionUsuariosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Inicializar mecSelected con todas las placas de vehículos
+    this.clientesList.forEach(vehiculo => {
+      this.mecSelected[vehiculo.id] = false;
+    });
     this.getAll();
   }
 
   //Obtencion de todos los clientes
   getAll() {
-    console.log('Antes de obtener los datos');
     this.http.get("http://localhost:8085/api/cliente")
       .subscribe((resultData: any) => {
-        console.log('Después de obtener los datos', resultData.data);
         this.clientesList = resultData.data;
         this.updateTotalPages();
-        console.log('clientesList:', this.clientesList);
         this.cdr.detectChanges();
       });
   //Obtencion de todas las sedes
@@ -61,35 +62,24 @@ export class GestionUsuariosComponent implements OnInit {
 
 
   eliminarSeleccionados() {
-    // Obtén los IDs de los elementos seleccionados
-    const idsToDelete = this.clientesList
-      .map((cliente, index) => this.mecSelected[index] ? cliente.id : null)
-      .filter(id => id !== null);
-
+    const idsToDelete = this.vehiculosSeleccionados;
+  
     console.log(idsToDelete);
-
+  
     if (idsToDelete.length === 0) {
-      alert('Por favor, selecciona al menos un mecánico para eliminar.');
+      alert('Por favor, selecciona al menos un vehiculo para eliminar.');
       return;
     }
-
-    // Realiza la solicitud para eliminar los mecánicos seleccionados
+  
     this.http.post("http://localhost:8085/api/cliente/delete-multiple", { ids: idsToDelete })
       .subscribe(
         (resultData: any) => {
           console.log(resultData);
-          if (resultData.status) {   
-            alert(resultData.message)      
-            // Continúa con la actualización de la lista después de la eliminación exitosa
-            this.getAll();
+          if (resultData.status) {
+            alert(resultData.message);
+            this.getAll(); // Actualiza la lista después de la eliminación exitosa
           } else {
-            // Muestra la información de las placas de vehículos asociadas
-            const associationsInfo: Array<{ placaVehiculo: string, modeloVehiculo: string, marcaVehiculo: number }> = resultData.associationsInfo;
-            if (associationsInfo && associationsInfo.length > 0) {
-              const message = 'No se puede eliminar, ya que tiene estos vehículos asociados:\n' +
-                associationsInfo.map(info => `Placa: ${info.placaVehiculo}, Modelo: ${info.modeloVehiculo}, Marca: ${info.marcaVehiculo}`).join('\n');
-              alert(message);
-            }
+            alert(resultData.message);
           }
         },
         (error) => {
@@ -97,7 +87,23 @@ export class GestionUsuariosComponent implements OnInit {
           alert('Error en la solicitud. Consulta la consola para más detalles.');
         }
       );
-    this.getAll();
+  }
+
+  resetSelection() {
+    this.mecSelected = {};
+    this.clientesList.forEach(vehiculo => {
+      this.mecSelected[vehiculo.id] = false;
+    });
+  }
+  vehiculosSeleccionados: string[] = [];
+
+  toggleSelection(placa: string) {
+    if (this.vehiculosSeleccionados.includes(placa)) {
+      this.vehiculosSeleccionados = this.vehiculosSeleccionados.filter(p => p !== placa);
+    } else {
+      this.vehiculosSeleccionados.push(placa);
+    }
+    console.log('Toggle selection:', this.vehiculosSeleccionados);
   }
 
   editarcliente(cliente: any) {

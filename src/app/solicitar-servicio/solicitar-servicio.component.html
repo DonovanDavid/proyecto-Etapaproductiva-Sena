@@ -2,7 +2,11 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2">
         <div class="col mb-3">
             <label for="exampleFormControlInput1" class="form-label mt-2 me-2 fw-bold">Seleccione su Vehículo:</label>
-            <select class="form-select" [(ngModel)]="vehiculo" name="vehiculo" style="width: 50%;">
+            <select *ngIf="userId?.tipoUsuario ===3 " class="form-select" [(ngModel)]="vehiculo" name="vehiculo" style="width: 50%;">
+                <option *ngFor="let vehiculo of vehiculosList" [value]="vehiculo.placaVehiculo">{{ vehiculo.placaVehiculo }}
+                </option>
+            </select>
+            <select *ngIf="userId?.tipoUsuario !== 3" class="form-select" [(ngModel)]="vehiculo" name="vehiculo" style="width: 50%;">
                 <option *ngFor="let vehiculo of vehiculosList" [value]="vehiculo.placa">{{ vehiculo.placa }}
                 </option>
             </select>

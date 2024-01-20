@@ -34,7 +34,7 @@
             </thead>
             <tbody class="table-group-divider">
                 <tr *ngFor="let mecanico of paginateVehiculos() | filter: searchTerm; let i = index">
-                    <td><input type="checkbox" class="form-check-input" [(ngModel)]="mecSelected[i]" /></td>
+                    <td><input type="checkbox" class="form-check-input" [checked]="vehiculosSeleccionados.includes(mecanico.id)" (change)="toggleSelection(mecanico.id)" /></td>
                     <td>{{ mecanico.id }}</td>
                     <td>{{ mecanico.nombre }}</td>
                     <td>{{ mecanico?.fechaNacimiento | date: 'shortDate'}}</td>

@@ -1,32 +1,30 @@
     <div class="container">
         <div class="profile">
-            <img src="user-icon.png" alt="User Icon">
-
-            <p>Nombre Usuario</p>
+            <p class="fw-bold h5">Bienvendio</p>
+            <p class="fw-bold h2">{{nombre}}</p>
         </div>
         <div class="selectors">
-                <ng-container  *ngIf="jefeOperaciones">
-                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-mecanicos')">Gestion de mecanicos</button>
-                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-usuarios')">Gestion de usuarios</button>
-                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('solicitar-servicio')">Solicitudes de servicio</button>
-                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('registrar-vehiculo')">Registrar Vehiculo</button>
-                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo')">Consultar Vehiculo</button>
-                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda')">Gestionar Agenda</button>
+                <ng-container  *ngIf="tipoUsuario === 1">
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-mecanicos', userInfo)">Gestion de mecanicos</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-usuarios', userInfo)">Gestion de usuarios</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('solicitar-servicio', userInfo)">Solicitudes de servicio</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('registrar-vehiculo', userInfo)">Registrar Vehiculo</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo', userInfo)">Consultar Vehiculo</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda', userInfo)">Gestionar Agenda</button>
                     <button class="btn btn-outline-danger mb-2">
                         
                         Cerrar la Sesión</button>
                 </ng-container >
-                <ng-container *ngIf="mecanico">
-                    <button class="btn btn-info btn-lg p-3 mb-4 fw-bold">Revisiones</button>
-                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Solicitudes</button>
-                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Consultar Vehiculo</button>
+                <ng-container *ngIf="tipoUsuario === 2">
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda', userInfo)">Gestionar Agenda</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo', userInfo)">Consultar Vehiculo</button>
                     <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2">Cerrar la Sesión</button>
                 </ng-container>
-                <ng-container *ngIf="cliente">
-                    <button class="btn btn-info btn-lg p-3 mb-4 fw-bold">Solicitar Servicio</button>
-                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Registrar Vehiculo</button>
-                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Consultar Vehiculo</button>
-                    <button class="btn btn-info btn-lg p-3 fw-bold mb-4">Gestionar Agenda</button>
+                <ng-container *ngIf="tipoUsuario === 3">
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('solicitar-servicio', userInfo)">Solicitudes de servicio</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('registrar-vehiculo', userInfo)">Registrar Vehiculo</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo', userInfo)">Consultar Vehiculo</button>
+                    <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda', userInfo)">Gestionar Agenda</button>
                     <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2">Cerrar la Sesión</button>
                 </ng-container>
             </div>
