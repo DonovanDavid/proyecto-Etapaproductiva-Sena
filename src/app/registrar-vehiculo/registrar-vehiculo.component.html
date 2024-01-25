@@ -1,5 +1,9 @@
 <div class="container p-5">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+        <div class="col mb-3" *ngIf="userId.tipoUsuario === 1">
+            <label class="form-label fw-bold">Cliente:</label>
+            <input type="text" class="form-control" placeholder="" [(ngModel)]="idCliente">
+        </div>
         <div class="col mb-3">
             <label class="form-label fw-bold">Placa:</label>
             <input type="text" class="form-control" placeholder="" [(ngModel)]="placa">

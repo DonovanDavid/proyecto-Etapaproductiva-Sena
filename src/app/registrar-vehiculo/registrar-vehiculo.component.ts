@@ -43,12 +43,21 @@ export class RegistrarVehiculoComponent {
   }
 
   guardarRelacion() {
-    let bodyData = {
-      "idCliente": this.userId["id"],
-      "placaVehiculo": this.placa
-    }
-
     if (this.userId["tipoUsuario"] == 3) {
+      let bodyData = {
+        "idCliente": this.userId["id"],
+        "placaVehiculo": this.placa
+      }
+      this.http.post("http://localhost:8085/api/clientevehiculo/add", bodyData).subscribe((resultData: any) => {
+        console.log(resultData);
+        alert(resultData.message);
+        this.getAll();/*  */
+      })
+    }else{
+      let bodyData = {
+        "idCliente": this.idCliente,
+        "placaVehiculo": this.placa
+      }
       this.http.post("http://localhost:8085/api/clientevehiculo/add", bodyData).subscribe((resultData: any) => {
         console.log(resultData);
         alert(resultData.message);
@@ -58,7 +67,6 @@ export class RegistrarVehiculoComponent {
   }
 
   guardarVehiculo() {
-
     let bodyData = {
       "placa": this.placa,
       "tipoVehiculo": this.tipoVehiculo,
@@ -67,7 +75,7 @@ export class RegistrarVehiculoComponent {
       "modelo": this.modelo,
       "marca": this.marca,
       "estado": this.estado,
-      "idCliente": this.userId["id"]
+      "idCliente": this?.idCliente || this.userId["id"]
     };
     console.log(bodyData);
     this.http.post("http://localhost:8085/api/vehiculo/add", bodyData).subscribe((resultData: any) => {

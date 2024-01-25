@@ -188,7 +188,7 @@ export class ConsultarVehiculoComponent implements OnInit {
       "modelo": this.modelo,
       "marca": this.marca,
       "estado": this.estado,
-      "idCliente": this.userId["id"]
+      "idCliente": this.idCliente
     };
     console.log(bodyData);
     this.http.post("http://localhost:8085/api/vehiculo/add", bodyData).subscribe((resultData: any) => {

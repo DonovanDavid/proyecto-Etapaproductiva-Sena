@@ -8,8 +8,8 @@
         </div>
         <div class="col-md-6 mb-3 text-md-right " style="margin-left: auto;display: flex; justify-content: flex-end;">
             <button class="btn btn-success" type="button" data-bs-toggle="modal"
-                data-bs-target="#staticCrear">Crear</button>
-            <button class="btn btn-danger" type="button" (click)="eliminarSeleccionados()">Eliminar
+                data-bs-target="#staticCrear" [disabled]="userId.tipoUsuario == 2 || userId.tipoUsuario  == 3">Crear</button>
+            <button class="btn btn-danger" type="button" (click)="eliminarSeleccionados()" [disabled]="userId.tipoUsuario == 2">Eliminar
                 Seleccionados</button>
         </div>
     </div>
@@ -43,7 +43,7 @@
                     <td>{{ obtenerNombreCliente(vehiculo.idCliente) }}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" (click)="editarMecanico(vehiculo)" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop" style="width: 100%;height: 50%;">Editar</button>
+                            data-bs-target="#staticBackdrop" style="width: 100%;height: 50%;" [disabled]="userId.tipoUsuario  == 2">Editar</button>
                     </td>
                 </tr>
             </tbody>
@@ -143,6 +143,12 @@
                         <label class="col-form-label">Placa:</label>
                         <input type="text" class="form-control" [(ngModel)]="placa"
                             [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Cliente:</label>
+                        <select class="form-control" [(ngModel)]="idCliente" name="cliente">
+                            <option *ngFor="let cliente of clientesList" [value]="cliente.id">{{ cliente.nombre }}</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Tipo de vehiculo:</label>

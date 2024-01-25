@@ -70,7 +70,7 @@ export class GestionAgendaComponent implements OnInit {
         });
     } else {
       if (this.userId["tipoUsuario"] == 2) {
-        console.log("mecanico")
+        console.log("mecanico");
         this.http.get("http://localhost:8085/api/revision/mecanico" + "/" + this.userId["id"])
           .subscribe((resultData: any) => {
             this.revisionesList = resultData.data;
