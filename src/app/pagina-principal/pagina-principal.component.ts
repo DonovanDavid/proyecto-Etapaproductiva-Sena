@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicComponentService } from '../dymamic-component.service';
-import {UserInfo} from '../login/auth-service.service'
+import {AuthService, UserInfo} from '../login/auth-service.service'
 
 
 @Component({
@@ -14,7 +14,7 @@ export class PaginaPrincipalComponent implements OnInit {
   tipoUsuario?: number;
   userInfo?: UserInfo; // Utiliza la interfaz UserInfo
 
-  constructor(public dynamicComponentService: DynamicComponentService) {}
+  constructor(public dynamicComponentService: DynamicComponentService, private authService: AuthService) {}
 
   ngOnInit(): void {
      // Obtiene la información del usuario desde el almacenamiento local
@@ -30,5 +30,10 @@ export class PaginaPrincipalComponent implements OnInit {
     } else {
       console.log('userInfoString es nulo o indefinido');
     }
+  }
+  logout(): void {
+    // Llama al método de cierre de sesión en el servicio de autenticación
+    console.log("btn cerrar")
+    this.authService.logout();
   }
 }

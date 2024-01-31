@@ -11,21 +11,21 @@
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('registrar-vehiculo', userInfo)">Registrar Vehiculo</button>
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo', userInfo)">Consultar Vehiculo</button>
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda', userInfo)">Gestionar Agenda</button>
-                    <button class="btn btn-outline-danger mb-2">
+                    <button class="btn btn-outline-danger mb-2" (click)="logout()">
                         
                         Cerrar la Sesión</button>
                 </ng-container >
                 <ng-container *ngIf="tipoUsuario === 2">
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda', userInfo)">Gestionar Agenda</button>
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo', userInfo)">Consultar Vehiculo</button>
-                    <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2">Cerrar la Sesión</button>
+                    <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2" (click)="logout()">Cerrar la Sesión</button>
                 </ng-container>
                 <ng-container *ngIf="tipoUsuario === 3">
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('solicitar-servicio', userInfo)">Solicitudes de servicio</button>
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('registrar-vehiculo', userInfo)">Registrar Vehiculo</button>
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('consultar-vehiculo', userInfo)">Consultar Vehiculo</button>
                     <button class="btn btn-info mb-4" (click)="dynamicComponentLoader.loadDynamicComponent('gestion-agenda', userInfo)">Gestionar Agenda</button>
-                    <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2">Cerrar la Sesión</button>
+                    <button class="btn btn-outline-danger btn-lg p-3 fw-bold mb-2" (click)="logout()">Cerrar la Sesión</button>
                 </ng-container>
             </div>
         </div>

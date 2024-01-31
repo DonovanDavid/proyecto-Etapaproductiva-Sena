@@ -46,7 +46,7 @@
                     <td>{{ revision.observaciones }}</td>
                     <td>
                         <button class="btn btn-primary btn-sm" (click)="editarMecanico(revision)" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop" style="width: 100%;height: 50%;" >Editar</button>
+                            data-bs-target="#staticBackdrop" style="width: 100%;height: 50%;" [disabled]="userId.tipoUsuario  == 3">Editar</button>
                     </td>
                 </tr>
             </tbody>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="col-form-label">Observaciones:</label>
-                        <textarea *ngIf="mecanicoEditando" type="observaciones" class="form-control"
+                        <textarea *ngIf="mecanicoEditando" type="text" class="form-control"
                             [(ngModel)]="mecanicoEditando.observaciones" [ngModelOptions]="{standalone: true}"
                             rows="3" [disabled]="userId.tipoUsuario  == 3"></textarea>
                     </div>
@@ -156,11 +156,6 @@
                     <div class="mb-3">
                         <label class="col-form-label">Hora:</label>
                         <input type="time" class="form-control" [(ngModel)]="hora"
-                            [ngModelOptions]="{standalone: true}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="col-form-label">Estado:</label>
-                        <input type="text" class="form-control" [(ngModel)]="estado"
                             [ngModelOptions]="{standalone: true}">
                     </div>
                     <div class="mb-3">

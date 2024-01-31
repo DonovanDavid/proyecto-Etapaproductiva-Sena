@@ -43,15 +43,11 @@ export class GestionAgendaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Inicializar mecSelected con todas las placas de vehículos
-    this.vehiculosList.forEach(vehiculo => {
-      this.mecSelected[vehiculo.placa] = false;
-    });
 
     this.getAll();
   }
 
-  //Obtencion de todos los vehiculos
+  //Obtencion de todos las revisiones
   getAll() {
 
     if (this.userId["tipoUsuario"] == 1) {
@@ -59,13 +55,14 @@ export class GestionAgendaComponent implements OnInit {
       this.http.get("http://localhost:8085/api/revision")
         .subscribe((resultData: any) => {
           this.revisionesList = resultData.data;
+          console.log(this.revisionesList);
           this.updateTotalPages();
           this.resetSelection();
           this.cdr.detectChanges();
 
           // Inicializar mecSelected con todas las placas de vehículos
           this.revisionesList.forEach(vehiculo => {
-            this.mecSelected[vehiculo.placa] = false;
+            this.mecSelected[vehiculo.idRevision] = false;
           });
         });
     } else {
@@ -196,7 +193,7 @@ export class GestionAgendaComponent implements OnInit {
       "mecanico": this.mecanico,
       "fecha": this.fecha,
       "hora": this.hora,
-      "estado": this.estado,
+      "estado": 1,
       "observaciones": this.observaciones
     };
     console.log(bodyData);
@@ -222,7 +219,7 @@ export class GestionAgendaComponent implements OnInit {
   resetSelection() {
     this.mecSelected = {};
     this.revisionesList.forEach(vehiculo => {
-      this.mecSelected[vehiculo.placa] = false;
+      this.mecSelected[vehiculo.idRevision] = false;
     });
   }
   vehiculosSeleccionados: string[] = [];
@@ -251,7 +248,7 @@ export class GestionAgendaComponent implements OnInit {
     }
   }
   updateTotalPages() {
-    this.totalPages = Math.ceil(this.vehiculosList.length / this.pageSize);
+    this.totalPages = Math.ceil(this.revisionesList.length / this.pageSize);
   }
   generatePageArray(totalPages: number): number[] {
     return Array.from({ length: totalPages }, (_, i) => i + 1);

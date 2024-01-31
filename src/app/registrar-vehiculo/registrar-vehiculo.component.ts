@@ -8,6 +8,7 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 })
 export class RegistrarVehiculoComponent {
   marcaList: any[] = [];
+  clienteList: any[] = [];
   tipoVehiculoList: any[] = [];
   @Input() userId: any;
 
@@ -29,6 +30,11 @@ export class RegistrarVehiculoComponent {
   }
 
   getAll() {
+
+    this.http.get("http://localhost:8085/api/cliente")
+      .subscribe((resultData: any) => {
+        this.clienteList = resultData.data;
+      });
     //Obtencion de todos las marcas
     this.http.get("http://localhost:8085/api/marca")
       .subscribe((resultData: any) => {
@@ -45,7 +51,7 @@ export class RegistrarVehiculoComponent {
   guardarRelacion() {
     if (this.userId["tipoUsuario"] == 3) {
       let bodyData = {
-        "idCliente": this.userId["id"],
+        "idCliente": this.idCliente,
         "placaVehiculo": this.placa
       }
       this.http.post("http://localhost:8085/api/clientevehiculo/add", bodyData).subscribe((resultData: any) => {
@@ -75,7 +81,7 @@ export class RegistrarVehiculoComponent {
       "modelo": this.modelo,
       "marca": this.marca,
       "estado": this.estado,
-      "idCliente": this?.idCliente || this.userId["id"]
+      "idCliente": this.idCliente
     };
     console.log(bodyData);
     this.http.post("http://localhost:8085/api/vehiculo/add", bodyData).subscribe((resultData: any) => {

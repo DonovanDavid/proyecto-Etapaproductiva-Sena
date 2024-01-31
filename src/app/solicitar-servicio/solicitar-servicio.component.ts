@@ -61,7 +61,7 @@ export class SolicitarServicioComponent implements OnInit {
       "mecanico": mecanicoToSend,
       "fecha": this.receivedMessage,
       "hora": this.hora,
-      "estado": this.estado,
+      "estado": 1,
       "observaciones": this.observaciones
     };
     console.log(bodyData);
