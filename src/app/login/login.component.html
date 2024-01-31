@@ -1,1 +1,24 @@
-<p>login works!</p>
+<div style="display: flex;align-items: center;justify-content: center;">
+    <div class="text-center card container col-md-3">
+        <div class="mt-5 mb-5" (ngSubmit)="login()">
+            <mat-icon class="mb-4" aria-hidden="false" aria-label="Example home icon" fontIcon="directions_car"
+                width="72" height="57"></mat-icon>
+            <h1 class="h3 mb-3 fw-normal">Inicio de Sesión</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" [(ngModel)]="username" name="username" required
+                    placeholder="name@example.com">
+                <label for="floatingInput">Correo Electronico:</label>
+            </div>
+            <div class="form-floating mt-1">
+                <input type="password" class="form-control" [(ngModel)]="password" name="password" required
+                    placeholder="Password">
+                <label for="floatingPassword">Contraseña</label>
+            </div>
+            <div class="or-container">
+                <div class="line-separator"></div>
+                <div class="line-separator"></div>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" (click)="login()">Iniciar sesión</button>
+        </div>
+    </div>
+</div>

@@ -7,13 +7,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  template: `
-    <form (ngSubmit)="login()">
-      <label>Username: <input [(ngModel)]="username" name="username" required></label><br>
-      <label>Password: <input [(ngModel)]="password" name="password" type="password" required></label><br>
-      <button type="submit">Login</button>
-    </form>
-  `,
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username = '';
